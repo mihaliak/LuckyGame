@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>LuckyGame</title>
+	<style type="text/css">
+		body {
+			font-family: Fira Code, Inconsolata, Inconsolata For Powerline, Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace;
+			font-size: 14px;
+			background: #051120;
+    		color: #cbcfd4;
+		}
+
+		.container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			height: calc(100vh - 30px);
+		}
+
+		.items-wrapper {
+		    width: 735px;
+		    overflow: hidden;
+		    white-space: nowrap;
+		    margin: 0 auto;
+		    position: relative;
+		}
+
+		.items-wrapper:after {
+			content: ' ';
+		    position: absolute;
+		    width: 25px;
+		    height: 25px;
+		    background: #f0c981;
+		    border: 1px solid #051120;
+		    top: -12.5px;
+		    left: calc(50% - 25px / 2);
+		    transform: rotate(45deg);
+		    box-shadow: 0 0 5px rgba(5, 17, 32, .3);
+		}
+
+		.items {
+		    padding: 0px;
+		    margin: 0px;
+		    position: relative;
+		}
+
+		.item {
+		    width: 200px;
+		    height: 100px;
+		    padding: 10px;
+		    background: rgba(255, 255, 255, .1);
+		    border: 1px solid rgba(203, 207, 212, .3);
+		    margin: 5px;
+		    display: inline-flex;
+		    justify-content: center;
+		    align-items: center;
+		    flex-direction: column;
+		    box-sizing: border-box;
+		    border-radius: 6px;
+		}
+
+		.item.winner {
+			background: #f0c981;
+			border-color: #f0c981;
+			color: #04090f;
+		}
+
+		.buttons {
+			display: flex;
+			width: 320px;
+			justify-content: space-between;
+			align-items: center;
+			margin: 20px 0 0 0;
+		}
+
+		.start, .reset {
+			display: flex;
+		    width: 150px;
+		    height: 40px;
+		    font-size: 15px;
+		    border: 0;
+		    border-radius: 20px;
+		    justify-content: center;
+		    align-items: center;
+		    background: #62759e;
+		    color: #ebf1f8;
+		    cursor: pointer;
+		    margin: 15px 0;
+		    outline: none;
+		}
+
+		.reset {
+			background: #6baf62;
+		}
+
+		.result {
+			color: #f0c981;
+			font-weight: 500;
+			font-size: 16px;
+			text-align: center;
+			margin: 20px;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="items-wrapper">
+        <ul class="items"></ul>
+    </div>
+
+    <div class="buttons">
+    	<button class="start">Start</button>
+    	<button class="reset">Reset</button>
+    </div>
+
+	<div class="result" data-default="Try your luck and win some shit!"></div>
+</div>
+<script type="text/javascript" src="bundle.js"></script>
+</body>
+</html>
