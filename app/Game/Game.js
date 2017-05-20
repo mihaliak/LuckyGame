@@ -64,7 +64,7 @@ export default class Game {
         let items = this._items.slice(itemsToSkip)
 
         items = items.slice(0, items.length - itemsToSkip).map(item => {
-            item.chanceInRounds = item.chance / (this._rounds - 2)
+            item.chanceInRounds = item.chance / (this._rounds / 3)
 
             return item
         })
