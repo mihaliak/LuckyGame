@@ -11,7 +11,7 @@ export default class Game {
             duration: 3
         }
 
-        this.elements = {
+        this._elements = {
             items: document.querySelector('.items'),
             result: document.querySelector('.result')
         }
@@ -39,14 +39,14 @@ export default class Game {
         for (let i = 0; i < this._items.length; i++) {
             let item = this._items[i]
 
-            this.elements.items.innerHTML += `<li class="item" id="item-${i}">${item.name}<span>${item.price} &euro;</span></li>`
+            this._elements.items.innerHTML += `<li class="item" id="item-${i}">${item.name}<span>${item.price} &euro;</span></li>`
         }
     }
 
     reset() {
-        this.elements.items.style.left = `-158px`
-        this.elements.items.innerHTML = ''
-        this.elements.result.innerHTML = this.elements.result.getAttribute('data-default')
+        this._elements.items.style.left = `-158px`
+        this._elements.items.innerHTML = ''
+        this._elements.result.innerHTML = this._elements.result.getAttribute('data-default')
 
         this.resetItems()
         this.duplicateItems()
@@ -55,7 +55,7 @@ export default class Game {
     }
 
     finish() {
-        this.elements.result.innerHTML = `You just won ${this._winner.item.name} (${this._winner.item.price} &euro;) with chance ${this._winner.item.chance}%`
+        this._elements.result.innerHTML = `You just won ${this._winner.item.name} (${this._winner.item.price} &euro;) with chance ${this._winner.item.chance}%`
         document.querySelector(`#item-${this._winner.index}`).className += ' winner'
     }
 
@@ -99,7 +99,7 @@ export default class Game {
 
         let Animate = () => {
             window.setTimeout(() => {
-                this.elements.items.style.left = `-${Left}px`
+                this._elements.items.style.left = `-${Left}px`
 
                 Left += LeftIncrement;
                 Duration += 10
