@@ -1,6 +1,8 @@
 # LuckyGame
 Simple roll game with item chances in ES6 for friend.
 
+![Screenshot](https://raw.github.com/mihaliak/LuckyGame/master/screenshot.png)
+
     yarn
     yarn start # for development - live reload
     yarn build # to build app
