@@ -8065,45 +8065,30 @@
 
 	var _Item2 = _interopRequireDefault(_Item);
 
-	var _ItemsCollection = __webpack_require__(299);
-
-	var _ItemsCollection2 = _interopRequireDefault(_ItemsCollection);
-
-	var _Game = __webpack_require__(300);
+	var _Game = __webpack_require__(299);
 
 	var _Game2 = _interopRequireDefault(_Game);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Car = new _Item2.default('Car', 30000, 3);
-	var Mac = new _Item2.default('MacBook', 2400, 7);
-	var Camera = new _Item2.default('GoPRO Camera', 500, 9);
-	var Display = new _Item2.default('LG Display', 150, 14);
-	var Book = new _Item2.default('Book', 10, 22);
-	var Pen = new _Item2.default('Pen', 0.10, 45);
+	var Items = [new _Item2.default('Car', 30000, 3), new _Item2.default('MacBook', 2400, 7), new _Item2.default('GoPRO Camera', 500, 9), new _Item2.default('LG Display', 150, 14), new _Item2.default('Book', 10, 22), new _Item2.default('Pen', 0.10, 45)];
 
-	var Items = new _ItemsCollection2.default().addItem(Car).addItem(Mac).addItem(Camera).addItem(Display).addItem(Book).addItem(Pen);
-
-	var GameConfig = {
-	  duration: 3
-	};
-
-	var GameInstance = new _Game2.default(Items, GameConfig);
+	var GameInstance = new _Game2.default(Items);
 
 	var Reset = false;
 
 	document.querySelector('.start').addEventListener('click', function () {
-	  if (Reset) {
-	    GameInstance.reset();
-	  } else {
-	    Reset = true;
-	  }
+	    if (Reset) {
+	        GameInstance.reset();
+	    } else {
+	        Reset = true;
+	    }
 
-	  GameInstance.start();
+	    GameInstance.start();
 	});
 
 	document.querySelector('.reset').addEventListener('click', function () {
-	  GameInstance.reset();
+	    GameInstance.reset();
 	});
 
 /***/ }),
@@ -8170,51 +8155,6 @@
 /* 299 */
 /***/ (function(module, exports) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var ItemsCollection = function () {
-	    function ItemsCollection() {
-	        var items = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-	        _classCallCheck(this, ItemsCollection);
-
-	        this._items = items;
-	    }
-
-	    _createClass(ItemsCollection, [{
-	        key: "addItem",
-	        value: function addItem(item) {
-	            this._items.push(item);
-
-	            return this;
-	        }
-	    }, {
-	        key: "items",
-	        get: function get() {
-	            return this._items;
-	        },
-	        set: function set(items) {
-	            this._items = items;
-	        }
-	    }]);
-
-	    return ItemsCollection;
-	}();
-
-	exports.default = ItemsCollection;
-
-/***/ }),
-/* 300 */
-/***/ (function(module, exports, __webpack_require__) {
-
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -8223,19 +8163,13 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _Support = __webpack_require__(301);
-
-	var _Support2 = _interopRequireDefault(_Support);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var Game = function () {
-	    function Game(ItemsCollection, config) {
+	    function Game(items, config) {
 	        _classCallCheck(this, Game);
 
-	        this._originalItems = _Support2.default.shuffleArray(ItemsCollection.items);
+	        this._originalItems = items;
 	        this._items = [];
 	        this._winner = null;
 	        this._rounds = 10;
@@ -8244,7 +8178,7 @@
 	            duration: 3
 	        };
 
-	        this.elements = {
+	        this._elements = {
 	            items: document.querySelector('.items'),
 	            result: document.querySelector('.result')
 	        };
@@ -8270,7 +8204,9 @@
 	                return _this._items;
 	            }));
 
-	            this._items = _Support2.default.shuffleArray(this._items);
+	            this._items = this._items.sort(function () {
+	                return .5 - Math.random();
+	            });
 	        }
 	    }, {
 	        key: 'render',
@@ -8278,15 +8214,15 @@
 	            for (var i = 0; i < this._items.length; i++) {
 	                var item = this._items[i];
 
-	                this.elements.items.innerHTML += '<li class="item" id="item-' + i + '">' + item.name + '<span>' + item.price + ' &euro;</span></li>';
+	                this._elements.items.innerHTML += '<li class="item" id="item-' + i + '">' + item.name + '<span>' + item.price + ' &euro;</span></li>';
 	            }
 	        }
 	    }, {
 	        key: 'reset',
 	        value: function reset() {
-	            this.elements.items.style.left = '-158px';
-	            this.elements.items.innerHTML = '';
-	            this.elements.result.innerHTML = this.elements.result.getAttribute('data-default');
+	            this._elements.items.style.left = '-158px';
+	            this._elements.items.innerHTML = '';
+	            this._elements.result.innerHTML = this._elements.result.getAttribute('data-default');
 
 	            this.resetItems();
 	            this.duplicateItems();
@@ -8296,7 +8232,7 @@
 	    }, {
 	        key: 'finish',
 	        value: function finish() {
-	            this.elements.result.innerHTML = 'You just won ' + this._winner.item.name + ' (' + this._winner.item.price + ' &euro;) with chance ' + this._winner.item.chance + '%';
+	            this._elements.result.innerHTML = 'You just won ' + this._winner.item.name + ' (' + this._winner.item.price + ' &euro;) with chance ' + this._winner.item.chance + '%';
 	            document.querySelector('#item-' + this._winner.index).className += ' winner';
 	        }
 	    }, {
@@ -8308,12 +8244,15 @@
 	            var items = this._items.slice(itemsToSkip);
 
 	            items = items.slice(0, items.length - itemsToSkip).map(function (item) {
-	                item.chanceInRounds = item.chance / (_this2._rounds - 2);
+	                item.chanceInRounds = item.chance / (_this2._rounds / 3);
 
 	                return item;
 	            });
 
-	            var chances = _Support2.default.sumObjectsKeyValues(items, 'chanceInRounds');
+	            var chances = items.reduce(function (count, item) {
+	                return count + item.chanceInRounds;
+	            }, 0);
+
 	            var randomNumber = Math.floor(Math.random() * (chances * 100));
 	            var counter = 0;
 
@@ -8337,21 +8276,20 @@
 	        value: function start() {
 	            var _this3 = this;
 
-	            var ItemWidth = 210;
-	            var Duration = 0;
-	            var MaxDuration = this._config.duration * 1000;
-	            var Left = 0;
-	            var FinalLeft = ItemWidth * (this._winner.index - 1.157);
-	            var LeftIncrement = FinalLeft / (MaxDuration / 10);
+	            var duration = 0;
+	            var maxDuration = this._config.duration * 1000;
+	            var left = 0;
+	            var finalLeft = 210 * (this._winner.index - 1.157);
+	            var leftIncrement = finalLeft / (maxDuration / 10);
 
 	            var Animate = function Animate() {
 	                window.setTimeout(function () {
-	                    _this3.elements.items.style.left = '-' + Left + 'px';
+	                    _this3._elements.items.style.left = '-' + left + 'px';
 
-	                    Left += LeftIncrement;
-	                    Duration += 10;
+	                    left += leftIncrement;
+	                    duration += 10;
 
-	                    if (Duration < MaxDuration) {
+	                    if (duration < maxDuration) {
 	                        Animate();
 	                    } else {
 	                        _this3.finish();
@@ -8367,53 +8305,6 @@
 	}();
 
 	exports.default = Game;
-
-/***/ }),
-/* 301 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Support = function () {
-	    function Support() {
-	        _classCallCheck(this, Support);
-	    }
-
-	    _createClass(Support, null, [{
-	        key: "shuffleArray",
-	        value: function shuffleArray(array) {
-	            return array.sort(function () {
-	                return .5 - Math.random();
-	            });
-	        }
-	    }, {
-	        key: "sumObjectsKeyValues",
-	        value: function sumObjectsKeyValues(objects, key) {
-	            return objects.reduce(function (count, item) {
-	                return count + item[key];
-	            }, 0);
-	        }
-	    }, {
-	        key: "sleep",
-	        value: function sleep(ms) {
-	            return new Promise(function (resolve) {
-	                return setTimeout(resolve, ms);
-	            });
-	        }
-	    }]);
-
-	    return Support;
-	}();
-
-	exports.default = Support;
 
 /***/ })
 /******/ ]);
