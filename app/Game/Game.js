@@ -1,8 +1,6 @@
-import Support from './Support';
-
 export default class Game {
-    constructor(ItemsCollection, config) {
-        this._originalItems = Support.shuffleArray(ItemsCollection.items)
+    constructor(items, config) {
+        this._originalItems = items
         this._items = []
         this._winner = null
         this._rounds = 10
@@ -32,7 +30,7 @@ export default class Game {
             return this._items
         }));
 
-        this._items = Support.shuffleArray(this._items)
+        this._items = this._items.sort(() => .5 - Math.random())
     }
 
     render() {
@@ -69,7 +67,10 @@ export default class Game {
             return item
         })
 
-        let chances = Support.sumObjectsKeyValues(items, 'chanceInRounds')
+        let chances = items.reduce((count, item) => {
+            return count + item.chanceInRounds
+        }, 0)
+
         let randomNumber = Math.floor(Math.random() * (chances * 100))
         let counter = 0
 
@@ -90,21 +91,20 @@ export default class Game {
     }
 
     start() {
-        let ItemWidth = 210
-        let Duration = 0
-        let MaxDuration = this._config.duration * 1000
-        let Left = 0
-        let FinalLeft = ItemWidth * (this._winner.index - 1.157)
-        let LeftIncrement = FinalLeft / (MaxDuration / 10)
+        let duration = 0
+        let maxDuration = this._config.duration * 1000
+        let left = 0
+        let finalLeft = 210 * (this._winner.index - 1.157)
+        let leftIncrement = finalLeft / (maxDuration / 10)
 
         let Animate = () => {
             window.setTimeout(() => {
-                this._elements.items.style.left = `-${Left}px`
+                this._elements.items.style.left = `-${left}px`
 
-                Left += LeftIncrement;
-                Duration += 10
+                left += leftIncrement;
+                duration += 10
 
-                if (Duration < MaxDuration) {
+                if (duration < maxDuration) {
                     Animate()
                 } else {
                     this.finish()
